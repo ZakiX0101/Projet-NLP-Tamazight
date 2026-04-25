@@ -1,63 +1,133 @@
-# ⵣ Tamazight NLP - Arabic ➔ Tamazight Neural Translator
+# ⵣ Tamazight NLP - Traducteur Arabe → Tamazight (NLPTMZ)
 
-A Data Engineering and Artificial Intelligence project providing an automatic translation system from Arabic to Tamazight (Tifinagh script). The system relies on a Transformer model (NLLB-200) fine-tuned on the Tawnza dataset, exposed via a FastAPI REST application and a React user interface.
+A full-stack NLP application that translates Arabic text into Tamazight (Tifinagh script) using a fine-tuned **NLLB (No Language Left Behind)** Seq2Seq model.  
+Built with **FastAPI** (backend) + **React/Vite** (frontend), fully containerized with **Docker Compose**.
 
-## Project Architecture
-* **ML Model:** Transfer Learning on `facebook/nllb-200-distilled-600M`
-* **Backend:** FastAPI, PyTorch, HuggingFace Transformers
-* **Frontend:** React, Vite
-* **Infrastructure:** Docker & Docker Compose
+---
 
-## Important Prerequisite: The AI Model
-The language model generated during training weighs several gigabytes. Due to performance reasons and GitHub storage limits, **the model weights are not versioned in this repository**.
+## Architecture
 
-You must manually download the model folder and place it in the correct directory before running the application.
-
-## Installation and Execution Guide
-
-### 1. System Requirements
-Ensure you have [Docker](https://docs.docker.com/get-docker/) and Docker Compose installed on your machine.
-
-### 2. Clone the Repository
-```bash
-git clone [https://github.com/your-username/projet-nlp-tamazight.git](https://github.com/your-username/projet-nlp-tamazight.git)
-cd projet-nlp-tamazight
 ```
-
-### 3. Add the Model
-
-The file structure must strictly look like this :
-
-projet-nlp-tamazight/
+Projet-NLP-Tamazight/
 ├── backend/
-│   ├── api_model/      <-- THE MODEL MUST BE PLACED HERE
-│   │   ├── model.safetensors
-│   │   ├── config.json
-│   │   └── ...
-│   ├── main.py
-│   ├── Dockerfile
-│   └── requirements.txt
+│   ├── api_model/          ← YOU must place your model here (see below)
+│   ├── main.py             ← FastAPI app (POST /translate)
+│   ├── requirements.txt
+│   └── dockerfile
 ├── frontend/
-└── docker-compose.yml
-
-### 4. Run the Application with Docker
-
-```bash
-docker-compose up --build -d
+│   ├── src/
+│   └── dockerfile
+├── docker-compose.yml
+└── nllb.ipynb              ← Training / fine-tuning notebook
 ```
 
-### 5. Access the Application
+---
 
-Once the containers are running, the services are accessible via your browser:
+##  Prerequisites: Place Your Model Files
 
-    Web Interface : http://localhost:5173
+> [!IMPORTANT]
+> The model is **not included** in this repository.  
+> You must provide your own fine-tuned model before running the app.
 
-    Interactive API Documentation (Swagger): http://localhost:8000/docs
+Place your fine-tuned Hugging Face model files in the following directory:
 
-### 6. Stop the Application
-```bash
-docker-compose down
+```
+backend/api_model/
 ```
 
-The project was built collaboratively by Aymane El Akkioui and Zakaria Bellil.
+This folder must contain at minimum:
 
+| File | Description |
+|---|---|
+| `config.json` | Model configuration |
+| `tokenizer_config.json` | Tokenizer configuration |
+| `sentencepiece.bpe.model` | SentencePiece vocabulary |
+| `model.safetensors` (or `pytorch_model.bin`) | Model weights |
+
+You can export/save a fine-tuned model from Hugging Face like this:
+
+```python
+model.save_pretrained("./backend/api_model")
+tokenizer.save_pretrained("./backend/api_model")
+```
+
+Or download a compatible model from the [Hugging Face Hub](https://huggingface.co/models):
+
+---
+
+## Running with Docker 
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ZakiX0101/Projet-NLP-Tamazight.git
+cd Projet-NLP-Tamazight
+```
+
+### 2. Add your model
+
+Follow the [section above](#-prerequisites-place-your-model-files) to populate `backend/api_model/`.
+
+### 3. Build and start all services
+
+```bash
+docker compose up --build
+```
+
+| Service | URL |
+|---|---|
+| **Frontend** (React UI) | http://localhost:5173 |
+| **Backend** (FastAPI) | http://localhost:8000 |
+| **API Docs** (Swagger) | http://localhost:8000/docs |
+
+### 4. Stop the application
+
+```bash
+docker compose down
+```
+
+---
+
+## API Reference
+
+### `POST /translate`
+
+Translates Arabic text to Tamazight.
+
+**Request body:**
+```json
+{
+  "text": "مرحبا بالعالم"
+}
+```
+
+**Response:**
+```json
+{
+  "source_ar": "مرحبا بالعالم",
+  "target_zgh": "ⴰⵣⵓⵍ ⴼ ⵓⵎⴰⴷⴰⵍ"
+}
+```
+
+---
+
+## Training / Fine-tuning
+
+The Jupyter notebook `nllb.ipynb` at the root of the repository contains the full training pipeline used to fine-tune the NLLB model on an Arabic–Tamazight parallel corpus.
+
+---
+
+##  Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Model | NLLB (Seq2Seq, Hugging Face Transformers) |
+| Backend | FastAPI, PyTorch, Uvicorn |
+| Frontend | React 18, Vite, CSS |
+| Containerization | Docker, Docker Compose |
+
+---
+
+## Authors
+
+Aymane El Akkioui & Zakariae Bellil — NLP Project
