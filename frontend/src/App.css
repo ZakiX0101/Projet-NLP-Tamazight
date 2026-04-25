@@ -1,0 +1,240 @@
+/* ── Global reset ────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0f172a;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+/* ── App shell (full viewport, column flex) ─────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Navbar ──────────────────────────────────────────────────── */
+.navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.5rem;
+  background-color: #0f172a;
+  border-bottom: 1px solid #1e293b;
+  flex-shrink: 0;
+}
+
+.nav-brand {
+  position: absolute;
+  left: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.02em;
+}
+
+.nav-brand-accent {
+  color: #3b82f6;
+}
+
+.nav-center {
+  text-align: center;
+}
+
+.nav-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: -0.01em;
+}
+
+.nav-subtitle {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 0.1rem;
+}
+
+/* ── Language selector bar ───────────────────────────────────── */
+.lang-bar {
+  background-color: #0f172a;
+  border-bottom: 1px solid #1e293b;
+  padding: 0.6rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.lang-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.lang-pill {
+  padding: 0.35rem 1.1rem;
+  border: 1px solid #334155;
+  border-radius: 9999px;
+  background: transparent;
+  color: #f1f5f9;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: default;
+  font-family: inherit;
+}
+
+.active-lang {
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+
+.swap-icon {
+  font-size: 1.1rem;
+  color: #475569;
+  user-select: none;
+}
+
+/* ── Split panels (main content) ─────────────────────────────── */
+.panels {
+  display: flex;
+  flex: 1;
+  /* fills remaining vertical space */
+  min-height: 0;
+  /* required for flex children to shrink */
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.5rem;
+  position: relative;
+  min-height: 360px;
+}
+
+/* Vertical divider */
+.divider {
+  width: 1px;
+  background-color: #1e293b;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+/* ── Textareas ───────────────────────────────────────────────── */
+.panel-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  background: transparent;
+  color: #f1f5f9;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+}
+
+.panel-textarea::placeholder {
+  color: #334155;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.output-text {
+  color: #93c5fd;
+  /* blue-300 — slightly tinted for output */
+  cursor: default;
+}
+
+/* Output placeholder (before translation) */
+.output-placeholder {
+  color: #334155;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+/* ── Panel action buttons (paste / clear) ────────────────────── */
+.panel-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.paste-btn,
+.clear-btn {
+  padding: 0.35rem 0.9rem;
+  border: 1px solid #334155;
+  border-radius: 9999px;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.paste-btn:hover,
+.clear-btn:hover {
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+
+/* ── Bottom action bar ───────────────────────────────────────── */
+.bottom-bar {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  background-color: #0f172a;
+  border-top: 1px solid #1e293b;
+  flex-shrink: 0;
+}
+
+.translate-btn {
+  padding: 0.7rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  background: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  /* fully rounded pill */
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.03em;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.translate-btn:hover:not(:disabled) {
+  background: #0069d9;
+  transform: translateY(-1px);
+}
+
+.translate-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.translate-btn:disabled {
+  background: #1e293b;
+  color: #475569;
+  cursor: not-allowed;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  background-color: #0f172a;
+  border-top: 1px solid #1e293b;
+  flex-shrink: 0;
+}

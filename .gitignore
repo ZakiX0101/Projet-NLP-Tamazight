@@ -1,0 +1,27 @@
+/backend/api_model/
+
+# Environnements
+/backend/venv/
+/frontend/node_modules/
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Builds & Logs Frontend
+/frontend/dist/
+/frontend/build/
+/frontend/.vite/
+/frontend/coverage/
+/frontend/logs/
+/frontend/tmp/
+
+# Variables d'environnement (utilisation du wildcard pour englober les .local, .bak, etc.)
+/frontend/.env
+/frontend/.env.*
+
+# Fichiers OS & IDE
+.DS_Store
+.vscode/
+.idea/
